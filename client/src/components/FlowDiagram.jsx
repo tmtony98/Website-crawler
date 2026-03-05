@@ -13,47 +13,35 @@ import '@xyflow/react/dist/style.css';
 import dagre from '@dagrejs/dagre';
 import PageNode from './PageNode';
 
-/**
- * Auto-layout nodes using the dagre graph layout algorithm.
- *
- * Dagre takes a list of nodes and edges and figures out where to
- * position each node so the graph looks clean — like a flowchart.
- * It arranges nodes top-to-bottom with parent nodes above children.
- */
 function getLayoutedElements(nodes, edges) {
   const g = new dagre.graphlib.Graph();
   g.setDefaultEdgeLabel(() => ({}));
 
-  // LR = left-to-right layout direction (horizontal flow chains)
   g.setGraph({
     rankdir: 'LR',
-    nodesep: 40,   // Vertical spacing between nodes
-    ranksep: 80,   // Horizontal spacing between ranks (columns)
+    nodesep: 40,
+    ranksep: 80,
     marginx: 20,
     marginy: 20,
   });
 
-  // Add nodes to dagre (it needs width/height to calculate positions)
   for (const node of nodes) {
     g.setNode(node.id, { width: 220, height: 80 });
   }
 
-  // Add edges to dagre
   for (const edge of edges) {
     g.setEdge(edge.source, edge.target);
   }
 
-  // Run the layout algorithm
   dagre.layout(g);
 
-  // Apply calculated positions back to our nodes
   const layoutedNodes = nodes.map((node) => {
     const pos = g.node(node.id);
     return {
       ...node,
       position: {
-        x: pos.x - 110, // Center node (half of 220 width)
-        y: pos.y - 40,   // Center node (half of 80 height)
+        x: pos.x - 110,
+        y: pos.y - 40,
       },
     };
   });
@@ -61,11 +49,9 @@ function getLayoutedElements(nodes, edges) {
   return { nodes: layoutedNodes, edges };
 }
 
-// Register our custom node type
 const nodeTypes = { pageNode: PageNode };
 
 export default function FlowDiagram({ flowData }) {
-  // Transform backend data into React Flow format
   const { initialNodes, initialEdges } = useMemo(() => {
     if (!flowData) return { initialNodes: [], initialEdges: [] };
 
@@ -79,7 +65,7 @@ export default function FlowDiagram({ flowData }) {
         count: node.count,
         pages: node.pages || [],
       },
-      position: { x: 0, y: 0 }, // Will be overridden by dagre
+      position: { x: 0, y: 0 },
     }));
 
     const rfEdges = flowData.edges.map((edge) => ({
@@ -94,7 +80,6 @@ export default function FlowDiagram({ flowData }) {
       markerEnd: { type: MarkerType.ArrowClosed, color: '#94a3b8', width: 16, height: 16 },
     }));
 
-    // Apply auto-layout
     const layouted = getLayoutedElements(rfNodes, rfEdges);
     return { initialNodes: layouted.nodes, initialEdges: layouted.edges };
   }, [flowData]);

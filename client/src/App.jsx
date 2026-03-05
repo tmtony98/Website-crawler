@@ -6,13 +6,8 @@ import FlowDiagram from './components/FlowDiagram';
 import { startCrawl } from './utils/api';
 import './App.css';
 
-/**
- * Persistent sidebar + right content layout.
- * Left sidebar always shows: URL input, crawl button, auth fields, progress.
- * Right area shows the flow diagram once crawl completes.
- */
 export default function App() {
-  const [state, setState] = useState('idle'); // 'idle' | 'loading' | 'done' | 'error'
+  const [state, setState] = useState('idle');
   const [progress, setProgress] = useState(null);
   const [flowData, setFlowData] = useState(null);
   const [error, setError] = useState(null);
@@ -43,9 +38,7 @@ export default function App() {
 
   return (
     <div className="h-screen flex bg-white">
-      {/* ─── Left Sidebar ─── */}
       <div className="w-80 shrink-0 border-r border-gray-200 bg-gray-50 flex flex-col overflow-y-auto">
-        {/* Logo */}
         <div className="px-4 py-4 border-b border-gray-200">
           <div className="flex items-center gap-2">
             <div className="p-1.5 bg-blue-100 rounded-lg">
@@ -58,7 +51,6 @@ export default function App() {
           </p>
         </div>
 
-        {/* Crawl Form */}
         <div className="p-4 flex-1">
           <CrawlForm onSubmit={handleSubmit} isLoading={state === 'loading'} />
 
@@ -76,7 +68,6 @@ export default function App() {
         </div>
       </div>
 
-      {/* ─── Right Content Area ─── */}
       <div className="flex-1 flex flex-col min-w-0">
         {state === 'done' && flowData ? (
           <FlowDiagram flowData={flowData} />

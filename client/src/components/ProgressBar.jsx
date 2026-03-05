@@ -16,7 +16,6 @@ export default function ProgressBar({ progress }) {
         </span>
       </div>
 
-      {/* Progress bar */}
       <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
         <div
           className="h-full bg-blue-500 rounded-full transition-all duration-300"
@@ -24,7 +23,6 @@ export default function ProgressBar({ progress }) {
         />
       </div>
 
-      {/* Current URL */}
       {progress.currentTitle && (
         <p className="mt-2 text-xs text-gray-400 truncate">
           Currently visiting: {progress.currentTitle}

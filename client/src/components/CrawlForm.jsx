@@ -14,7 +14,6 @@ export default function CrawlForm({ onSubmit, isLoading }) {
     e.preventDefault();
     if (!url.trim()) return;
 
-    // Auto-prepend https:// if missing
     let finalUrl = url.trim();
     if (!finalUrl.startsWith('http://') && !finalUrl.startsWith('https://')) {
       finalUrl = 'https://' + finalUrl;
@@ -25,7 +24,6 @@ export default function CrawlForm({ onSubmit, isLoading }) {
 
   return (
     <form onSubmit={handleSubmit} className="w-full space-y-3">
-      {/* URL Input */}
       <div className="relative">
         <Globe className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
         <input
@@ -47,7 +45,6 @@ export default function CrawlForm({ onSubmit, isLoading }) {
         {isLoading ? 'Crawling...' : 'Start Crawl'}
       </button>
 
-      {/* Authenticated Access (Optional) */}
       <div className="border border-gray-200 rounded-lg overflow-hidden">
         <button
           type="button"
@@ -87,7 +84,6 @@ export default function CrawlForm({ onSubmit, isLoading }) {
         )}
       </div>
 
-      {/* Advanced Settings Toggle */}
       <button
         type="button"
         onClick={() => setShowAdvanced(!showAdvanced)}
@@ -97,7 +93,6 @@ export default function CrawlForm({ onSubmit, isLoading }) {
         {showAdvanced ? 'Hide' : 'Show'} advanced settings
       </button>
 
-      {/* Advanced Settings */}
       {showAdvanced && (
         <div className="p-3 bg-gray-50 rounded-lg border border-gray-100 space-y-3">
           <div>

@@ -15,12 +15,6 @@ import {
   ChevronRight,
 } from 'lucide-react';
 
-/**
- * Custom React Flow node representing a page in the user flow.
- * Color-coded by page type with an icon, title, and URL path.
- * For grouped pattern nodes, shows expandable list of individual pages.
- */
-
 const TYPE_CONFIG = {
   home:     { icon: Home,         bg: 'bg-blue-50',    border: 'border-blue-300',   text: 'text-blue-700',   badge: 'bg-blue-100 text-blue-600' },
   listing:  { icon: List,         bg: 'bg-green-50',   border: 'border-green-300',  text: 'text-green-700',  badge: 'bg-green-100 text-green-600' },
@@ -70,7 +64,6 @@ function PageNode({ data }) {
         </div>
       </div>
 
-      {/* Expanded list of grouped pages */}
       {hasPages && expanded && (
         <div className="mt-2 pt-2 border-t border-gray-200/50 space-y-1 max-h-[200px] overflow-y-auto">
           {data.pages.map((page, i) => (

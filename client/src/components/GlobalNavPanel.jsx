@@ -1,12 +1,5 @@
 import { Navigation, X } from 'lucide-react';
 
-/**
- * Sidebar panel showing links classified as "global navigation".
- *
- * These are links that appear on most/all pages (navbar, footer, etc.)
- * and were filtered OUT of the main flow diagram to reduce noise.
- * We still show them here so users can see what was filtered.
- */
 export default function GlobalNavPanel({ globalNav, stats, isOpen, onClose }) {
   if (!isOpen) return null;
 
@@ -27,7 +20,6 @@ export default function GlobalNavPanel({ globalNav, stats, isOpen, onClose }) {
         </p>
       </div>
 
-      {/* Stats */}
       {stats && (
         <div className="px-4 py-3 border-b border-gray-100 grid grid-cols-2 gap-3">
           <div>
@@ -49,7 +41,6 @@ export default function GlobalNavPanel({ globalNav, stats, isOpen, onClose }) {
         </div>
       )}
 
-      {/* Global nav links */}
       <div className="p-4">
         <div className="text-xs font-medium text-gray-500 mb-3 uppercase tracking-wide">
           Filtered Links ({globalNav.length})
