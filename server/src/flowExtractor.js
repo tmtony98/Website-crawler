@@ -102,6 +102,7 @@ export function extractFlow(crawlData) {
   // Each unique page (or pattern group) becomes a node in the diagram
   const nodeMap = {};
   const patternCounts = {}; // Track how many pages each pattern represents
+  const patternPages = {};  // Track individual pages grouped into each pattern
 
   for (const page of crawlData) {
     const path = getPathname(page.url);
@@ -109,6 +110,10 @@ export function extractFlow(crawlData) {
 
     // Count pages per pattern
     patternCounts[patternPath] = (patternCounts[patternPath] || 0) + 1;
+
+    // Collect individual pages for this pattern
+    if (!patternPages[patternPath]) patternPages[patternPath] = [];
+    patternPages[patternPath].push({ url: page.url, title: page.title, path });
 
     if (!nodeMap[patternPath]) {
       const isPattern = patternPath.includes(':slug');
@@ -119,15 +124,17 @@ export function extractFlow(crawlData) {
         url: isPattern ? patternPath : page.url,
         isPattern,
         count: 0,
+        pages: [],
         depth: page.depth,
       };
     }
   }
 
-  // Update counts and types
+  // Update counts, types, and grouped pages
   for (const [patternPath, count] of Object.entries(patternCounts)) {
     if (nodeMap[patternPath]) {
       nodeMap[patternPath].count = count;
+      nodeMap[patternPath].pages = patternPages[patternPath] || [];
     }
   }
 

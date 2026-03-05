@@ -77,6 +77,7 @@ export default function FlowDiagram({ flowData }) {
         path: node.id,
         type: node.type,
         count: node.count,
+        pages: node.pages || [],
       },
       position: { x: 0, y: 0 }, // Will be overridden by dagre
     }));

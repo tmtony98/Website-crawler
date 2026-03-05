@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import { Handle, Position } from '@xyflow/react';
 import {
   Home,
@@ -11,11 +11,14 @@ import {
   List,
   FileText,
   Globe,
+  ChevronDown,
+  ChevronRight,
 } from 'lucide-react';
 
 /**
  * Custom React Flow node representing a page in the user flow.
  * Color-coded by page type with an icon, title, and URL path.
+ * For grouped pattern nodes, shows expandable list of individual pages.
  */
 
 const TYPE_CONFIG = {
@@ -32,11 +35,13 @@ const TYPE_CONFIG = {
 };
 
 function PageNode({ data }) {
+  const [expanded, setExpanded] = useState(false);
   const config = TYPE_CONFIG[data.type] || TYPE_CONFIG.page;
   const Icon = config.icon;
+  const hasPages = data.pages && data.pages.length > 1;
 
   return (
-    <div className={`px-4 py-3 rounded-xl border-2 shadow-sm min-w-[180px] max-w-[260px] ${config.bg} ${config.border}`}>
+    <div className={`px-4 py-3 rounded-xl border-2 shadow-sm min-w-[180px] max-w-[300px] ${config.bg} ${config.border}`}>
       <Handle type="target" position={Position.Left} className="!bg-gray-400 !w-2 !h-2" />
 
       <div className="flex items-start gap-2">
@@ -50,13 +55,32 @@ function PageNode({ data }) {
           <div className="text-xs text-gray-400 mt-0.5 truncate font-mono">
             {data.path}
           </div>
-          {data.count > 1 && (
-            <div className={`inline-block text-[10px] mt-1 px-1.5 py-0.5 rounded-full font-medium ${config.badge}`}>
+          {hasPages && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setExpanded(!expanded);
+              }}
+              className={`flex items-center gap-1 text-[10px] mt-1 px-1.5 py-0.5 rounded-full font-medium cursor-pointer hover:opacity-80 ${config.badge}`}
+            >
+              {expanded ? <ChevronDown size={10} /> : <ChevronRight size={10} />}
               {data.count} pages
-            </div>
+            </button>
           )}
         </div>
       </div>
+
+      {/* Expanded list of grouped pages */}
+      {hasPages && expanded && (
+        <div className="mt-2 pt-2 border-t border-gray-200/50 space-y-1 max-h-[200px] overflow-y-auto">
+          {data.pages.map((page, i) => (
+            <div key={i} className="text-[10px] leading-tight">
+              <div className="text-gray-600 truncate">{page.title}</div>
+              <div className="text-gray-400 font-mono truncate">{page.path}</div>
+            </div>
+          ))}
+        </div>
+      )}
 
       <Handle type="source" position={Position.Right} className="!bg-gray-400 !w-2 !h-2" />
     </div>

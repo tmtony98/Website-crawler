@@ -8,7 +8,7 @@ export default function ProgressBar({ progress }) {
     : 0;
 
   return (
-    <div className="w-full max-w-xl mt-6">
+    <div className="w-full">
       <div className="flex items-center gap-2 mb-2">
         <Loader2 size={14} className="text-blue-500 animate-spin" />
         <span className="text-sm text-gray-500">
